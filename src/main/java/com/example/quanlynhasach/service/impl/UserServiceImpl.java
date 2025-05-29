@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> updateUser(UUID id, User user) {
         return userRepository.findById(id)
                 .map(existingUser -> {
-                    existingUser.setUsername(user.getUsername());
+                    existingUser.setName(user.getName());
                     existingUser.setEmail(user.getEmail());
                     return userRepository.save(existingUser);
                 });

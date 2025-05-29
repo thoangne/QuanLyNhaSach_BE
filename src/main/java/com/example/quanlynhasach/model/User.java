@@ -9,22 +9,24 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(columnDefinition = "BINARY(36)")
     private UUID id;
 
-    private String username;
+    private String name;
     private String email;
     private String password;
+    private String phone;
     private String address;
     private String role;
 
     public User() {
     }
 
-    public User(String username, String email, String password, String address, String role) {
-        this.username = username;
+    public User(String name, String email, String password, String phone, String address, String role) {
+        this.name = name;
         this.email = email;
         this.password = password;
+        this.phone = phone;
         this.address = address;
         this.role = role;
     }
@@ -37,12 +39,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -59,6 +61,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getAddress() {
