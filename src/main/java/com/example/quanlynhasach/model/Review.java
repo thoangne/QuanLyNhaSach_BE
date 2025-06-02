@@ -1,7 +1,6 @@
 package com.example.quanlynhasach.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "review")
@@ -9,15 +8,14 @@ public class Review {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID id;
+    private int id;
 
     @ManyToOne
-    @JoinColumn(name = "userid", nullable = false, columnDefinition = "BINARY(36)")
+    @JoinColumn(name = "userid", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "productid", nullable = false, columnDefinition = "BINARY(36)")
+    @JoinColumn(name = "productid", nullable = false)
     private Product product;
 
     @Column(nullable = false)
@@ -37,11 +35,11 @@ public class Review {
     }
 
     // Getters and Setters
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

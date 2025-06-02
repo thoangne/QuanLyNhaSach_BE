@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/carts")
@@ -24,7 +23,7 @@ public class CartController {
 
     // Tạo giỏ hàng mới cho user (theo userId)
     @PostMapping("/create")
-    public ResponseEntity<Cart> createCart(@RequestParam UUID userId) {
+    public ResponseEntity<Cart> createCart(@RequestParam int userId) {
         User user = userService.getUserById(userId).orElse(null);
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -35,7 +34,7 @@ public class CartController {
 
     // Lấy danh sách cart theo userId
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Cart>> getCartsByUser(@PathVariable UUID userId) {
+    public ResponseEntity<List<Cart>> getCartsByUser(@PathVariable int userId) {
         User user = userService.getUserById(userId).orElse(null);
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -46,7 +45,7 @@ public class CartController {
 
     // Lấy cart theo cartId
     @GetMapping("/{id}")
-    public ResponseEntity<Cart> getCartById(@PathVariable UUID id) {
+    public ResponseEntity<Cart> getCartById(@PathVariable int id) {
         Cart cart = cartService.getCartById(id);
         if (cart == null) {
             return ResponseEntity.notFound().build();
@@ -56,7 +55,7 @@ public class CartController {
 
     // Xóa cart theo id
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCart(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteCart(@PathVariable int id) {
         cartService.deleteCart(id);
         return ResponseEntity.noContent().build();
     }

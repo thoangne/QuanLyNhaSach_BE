@@ -1,7 +1,6 @@
 package com.example.quanlynhasach.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "category")
@@ -9,8 +8,7 @@ public class Category {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID id;
+    private int id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -28,11 +26,11 @@ public class Category {
 
     // Getters and Setters
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

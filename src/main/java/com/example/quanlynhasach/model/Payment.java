@@ -2,7 +2,6 @@ package com.example.quanlynhasach.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "payment")
@@ -10,11 +9,10 @@ public class Payment {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID id;
+    private int id;
 
     @ManyToOne
-    @JoinColumn(name = "orderid", nullable = false, columnDefinition = "BINARY(36)")
+    @JoinColumn(name = "orderid", nullable = false)
     private Order order;
 
     @Column(nullable = false)
@@ -35,11 +33,11 @@ public class Payment {
     }
 
     // Getters and Setters
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

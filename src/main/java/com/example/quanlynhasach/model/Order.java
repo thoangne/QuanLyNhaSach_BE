@@ -3,7 +3,6 @@ package com.example.quanlynhasach.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -11,11 +10,10 @@ public class Order {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID id;
+    private int id;
 
     @ManyToOne
-    @JoinColumn(name = "userid", nullable = false, columnDefinition = "BINARY(36)")
+    @JoinColumn(name = "userid", nullable = false)
     private User user;
 
     @Column(nullable = false)
@@ -34,11 +32,11 @@ public class Order {
         this.status = status;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

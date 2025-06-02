@@ -2,7 +2,6 @@ package com.example.quanlynhasach.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 @Table(name = "product")
@@ -10,8 +9,7 @@ public class Product {
 
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID id;
+    private int id;
 
     @Column(nullable = false)
     private String title;
@@ -47,11 +45,11 @@ public class Product {
         this.coverImage = coverImage;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

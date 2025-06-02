@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,7 +29,7 @@ public class UserController {
 
     // Lấy user theo id
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<User> getUserById(@PathVariable int id) {
         try {
             Optional<User> user = userService.getUserById(id);
             return user.map(ResponseEntity::ok)
@@ -53,7 +52,7 @@ public class UserController {
 
     // Cập nhật user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
         try {
             Optional<User> updatedUser = userService.updateUser(id, user);
             return updatedUser.map(ResponseEntity::ok)
@@ -65,7 +64,7 @@ public class UserController {
 
     // Xóa user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         try {
             boolean deleted = userService.deleteUser(id);
             if (deleted) {

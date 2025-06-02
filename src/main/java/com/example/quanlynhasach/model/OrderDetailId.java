@@ -2,36 +2,36 @@ package com.example.quanlynhasach.model;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
-import java.util.UUID;
+import java.util.Objects;
 
 @Embeddable
 public class OrderDetailId implements Serializable {
 
-    private UUID orderId;
-    private UUID productId;
+    private int orderId;
+    private int productId;
 
     // Constructors
     public OrderDetailId() {
     }
 
-    public OrderDetailId(UUID orderId, UUID productId) {
+    public OrderDetailId(int orderId, int productId) {
         this.orderId = orderId;
         this.productId = productId;
     }
 
-    public UUID getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(UUID orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
-    public UUID getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
@@ -43,11 +43,11 @@ public class OrderDetailId implements Serializable {
         if (!(obj instanceof OrderDetailId))
             return false;
         OrderDetailId other = (OrderDetailId) obj;
-        return orderId.equals(other.orderId) && productId.equals(other.productId);
+        return this.orderId == other.orderId && this.productId == other.productId;
     }
 
     @Override
     public int hashCode() {
-        return orderId.hashCode() + productId.hashCode();
+        return Objects.hash(orderId, productId);
     }
 }

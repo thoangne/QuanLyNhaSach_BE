@@ -2,18 +2,17 @@ package com.example.quanlynhasach.model;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ComposeId implements Serializable {
 
-    private UUID productId;
-    private UUID authorId;
+    private int productId;
+    private int authorId;
 
     // Constructors
     public ComposeId() {
     }
 
-    public ComposeId(UUID productId, UUID authorId) {
+    public ComposeId(int productId, int authorId) {
         this.productId = productId;
         this.authorId = authorId;
     }

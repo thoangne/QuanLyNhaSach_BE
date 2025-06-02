@@ -3,37 +3,36 @@ package com.example.quanlynhasach.model;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 @Embeddable
 public class CartItemKey implements Serializable {
 
-    private UUID cartId;
-    private UUID productId;
+    private int cartId;
+    private int productId;
 
     public CartItemKey() {
     }
 
-    public CartItemKey(UUID cartId, UUID productId) {
+    public CartItemKey(int cartId, int productId) {
         this.cartId = cartId;
         this.productId = productId;
     }
 
     // Getters, Setters, equals() and hashCode()
 
-    public UUID getCartId() {
+    public int getCartId() {
         return cartId;
     }
 
-    public void setCartId(UUID cartId) {
+    public void setCartId(int cartId) {
         this.cartId = cartId;
     }
 
-    public UUID getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 

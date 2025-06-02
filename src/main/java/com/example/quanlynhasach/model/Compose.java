@@ -1,7 +1,6 @@
 package com.example.quanlynhasach.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "compose")
@@ -9,36 +8,34 @@ import java.util.UUID;
 public class Compose {
 
     @Id
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID productId;
+    private int productId;
 
     @Id
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID authorId;
+    private int authorId;
 
     // Constructors
     public Compose() {
     }
 
-    public Compose(UUID productId, UUID authorId) {
+    public Compose(int productId, int authorId) {
         this.productId = productId;
         this.authorId = authorId;
     }
 
     // Getters and Setters
-    public UUID getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
-    public UUID getAuthorId() {
+    public int getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(UUID authorId) {
+    public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
 }

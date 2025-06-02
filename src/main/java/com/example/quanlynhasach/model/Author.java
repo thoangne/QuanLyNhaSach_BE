@@ -1,6 +1,5 @@
 package com.example.quanlynhasach.model;
 
-import java.util.UUID;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,17 +7,16 @@ import jakarta.persistence.*;
 public class Author {
     @Id
     @GeneratedValue
-    @Column(columnDefinition = "BINARY(36)")
-    private UUID id;
+    private int id;
 
     private String name;
     private String bio;
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

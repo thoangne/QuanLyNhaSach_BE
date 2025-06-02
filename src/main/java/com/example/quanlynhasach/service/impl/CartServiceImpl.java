@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -32,13 +31,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart getCartById(UUID id) {
+    public Cart getCartById(int id) {
         Optional<Cart> cart = cartRepository.findById(id);
         return cart.orElse(null);
     }
 
     @Override
-    public void deleteCart(UUID id) {
+    public void deleteCart(int id) {
         cartRepository.deleteById(id);
     }
 }
