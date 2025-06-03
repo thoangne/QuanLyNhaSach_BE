@@ -12,5 +12,5 @@ public interface CartService {
 
     Cart getCartById(int id);
 
-    void deleteCart(int id);
+    boolean deleteCart(int id);
 }

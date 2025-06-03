@@ -23,40 +23,64 @@ public class CartController {
 
     // Tạo giỏ hàng mới cho user (theo userId)
     @PostMapping("/create")
-    public ResponseEntity<Cart> createCart(@RequestParam int userId) {
-        User user = userService.getUserById(userId).orElse(null);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> createCart(@RequestParam int userId) {
+        try {
+            User user = userService.getUserById(userId).orElse(null);
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+            Cart cart = cartService.createCart(user);
+            return ResponseEntity.ok(cart);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Lỗi khi tạo giỏ hàng: " + e.getMessage());
         }
-        Cart cart = cartService.createCart(user);
-        return ResponseEntity.ok(cart);
     }
 
     // Lấy danh sách cart theo userId
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Cart>> getCartsByUser(@PathVariable int userId) {
-        User user = userService.getUserById(userId).orElse(null);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getCartsByUser(@PathVariable int userId) {
+        try {
+            User user = userService.getUserById(userId).orElse(null);
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+            List<Cart> carts = cartService.getCartsByUser(user);
+            return ResponseEntity.ok(carts);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Lỗi khi lấy giỏ hàng theo người dùng: " + e.getMessage());
         }
-        List<Cart> carts = cartService.getCartsByUser(user);
-        return ResponseEntity.ok(carts);
     }
 
     // Lấy cart theo cartId
     @GetMapping("/{id}")
-    public ResponseEntity<Cart> getCartById(@PathVariable int id) {
-        Cart cart = cartService.getCartById(id);
-        if (cart == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getCartById(@PathVariable int id) {
+        try {
+            Cart cart = cartService.getCartById(id);
+            if (cart == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(cart);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Lỗi khi lấy giỏ hàng: " + e.getMessage());
         }
-        return ResponseEntity.ok(cart);
     }
 
     // Xóa cart theo id
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCart(@PathVariable int id) {
-        cartService.deleteCart(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteAuthor(@PathVariable int id) {
+        try {
+            boolean deleted = cartService.deleteCart(id);
+            if (deleted) {
+                return ResponseEntity.ok("Đã xóa giỏ hàng có ID = " + id);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Lỗi khi lấy giỏ hàng: " + e.getMessage());
+        }
     }
 }

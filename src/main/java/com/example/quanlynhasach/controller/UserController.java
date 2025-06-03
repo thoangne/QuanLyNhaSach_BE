@@ -51,7 +51,7 @@ public class UserController {
     }
 
     // Cập nhật user
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
         try {
             Optional<User> updatedUser = userService.updateUser(id, user);
@@ -64,11 +64,11 @@ public class UserController {
 
     // Xóa user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
         try {
             boolean deleted = userService.deleteUser(id);
             if (deleted) {
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.ok("Đã xóa người dùng có ID = " + id);
             } else {
                 return ResponseEntity.notFound().build();
             }
