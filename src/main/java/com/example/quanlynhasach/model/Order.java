@@ -25,6 +25,9 @@ public class Order {
     @Column(nullable = false)
     private String status;
 
+    public Order() {
+    }
+
     public Order(User user, LocalDateTime orderDate, BigDecimal totalAmount, String status) {
         this.user = user;
         this.orderDate = orderDate;

@@ -11,12 +11,12 @@ public class CartItem {
 
     @ManyToOne
     @MapsId("cartId")
-    @JoinColumn(name = "CartId")
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     @ManyToOne
     @MapsId("productId")
-    @JoinColumn(name = "ProductId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(nullable = false)
@@ -25,10 +25,15 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(Cart cart, Product product, Integer quantity) {
+    public CartItem(Cart cart, Product product, int quantity) {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;
+
+        if (cart.getId() == 0 || product.getId() == 0) {
+            throw new IllegalArgumentException("Cart or Product ID is null");
+        }
+
         this.id = new CartItemKey(cart.getId(), product.getId());
     }
 

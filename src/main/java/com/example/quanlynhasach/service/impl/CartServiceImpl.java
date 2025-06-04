@@ -1,22 +1,29 @@
 package com.example.quanlynhasach.service.impl;
 
-import com.example.quanlynhasach.model.Cart;
-import com.example.quanlynhasach.model.User;
+import com.example.quanlynhasach.model.*;
+import com.example.quanlynhasach.repository.CartItemRepository;
 import com.example.quanlynhasach.repository.CartRepository;
+import com.example.quanlynhasach.repository.ProductRepository;
 import com.example.quanlynhasach.service.CartService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
-    public CartServiceImpl(CartRepository cartRepository) {
+    @Autowired
+    public CartServiceImpl(CartRepository cartRepository,
+            CartItemRepository cartItemRepository,
+            ProductRepository productRepository) {
         this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
@@ -32,8 +39,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCartById(int id) {
-        Optional<Cart> cart = cartRepository.findById(id);
-        return cart.orElse(null);
+        return cartRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -43,5 +49,45 @@ public class CartServiceImpl implements CartService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<CartItem> getCartItems(int cartId) {
+        return cartItemRepository.findByCartId(cartId);
+    }
+
+    @Override
+    public void addItemToCart(User user, Product product, int quantity) {
+        Cart cart = getOrCreateCartByUser(user);
+        CartItemKey key = new CartItemKey(cart.getId(), product.getId());
+
+        CartItem item = cartItemRepository.findById(key)
+                .orElse(new CartItem(cart, product, 0));
+        item.setQuantity(item.getQuantity() + quantity);
+        cartItemRepository.save(item);
+    }
+
+    @Override
+    public void removeItemFromCart(User user, int productId) {
+        Cart cart = getOrCreateCartByUser(user);
+        CartItemKey key = new CartItemKey(cart.getId(), productId);
+        cartItemRepository.deleteById(key);
+    }
+
+    @Override
+    public void clearCart(User user) {
+        Cart cart = getOrCreateCartByUser(user);
+        List<CartItem> items = cartItemRepository.findByCartId(cart.getId());
+        cartItemRepository.deleteAll(items);
+    }
+
+    private Cart getOrCreateCartByUser(User user) {
+        List<Cart> carts = cartRepository.findByUser(user);
+        if (!carts.isEmpty()) {
+            return carts.get(0);
+        } else {
+            Cart newCart = new Cart(user, LocalDateTime.now());
+            return cartRepository.save(newCart);
+        }
     }
 }
