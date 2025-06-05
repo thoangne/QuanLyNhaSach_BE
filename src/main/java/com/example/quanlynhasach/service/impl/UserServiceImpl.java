@@ -4,6 +4,7 @@ import com.example.quanlynhasach.model.User;
 import com.example.quanlynhasach.repository.UserRepository;
 import com.example.quanlynhasach.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
@@ -27,6 +31,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         return userRepository.save(user);
     }
 
@@ -51,12 +57,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(String email, String password) {
-        User user = userRepository.findByEmailAndPassword(email, password);
-        return user != null;
+        User user = userRepository.findByEmail(email);
+        return user != null && passwordEncoder.matches(password, user.getPassword());
     }
 
     @Override
     public User loginAndReturnUser(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
+        User user = userRepository.findByEmail(email);
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            return user;
+        }
+        return null;
     }
 }
