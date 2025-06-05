@@ -14,4 +14,8 @@ public interface UserService {
     Optional<User> updateUser(int id, User user); // Trả về Optional<User> để kiểm tra cập nhật có thành công không
 
     boolean deleteUser(int id);
+
+    public boolean login(String email, String password);
+
+    public User loginAndReturnUser(String email, String password);
 }

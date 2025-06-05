@@ -1,5 +1,6 @@
 package com.example.quanlynhasach.controller;
 
+import com.example.quanlynhasach.dto.LoginRequest;
 import com.example.quanlynhasach.model.User;
 import com.example.quanlynhasach.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,16 @@ public class UserController {
             }
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest login) {
+        boolean success = userService.login(login.email, login.password);
+        if (success) {
+            return "Login successful!";
+        } else {
+            return "Invalid email or password.";
         }
     }
 }
