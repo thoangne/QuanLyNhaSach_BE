@@ -1,5 +1,8 @@
 package com.example.quanlynhasach.service.impl;
 
+import com.example.quanlynhasach.dto.CategoryDTO;
+import com.example.quanlynhasach.dto.ProductDTO;
+import com.example.quanlynhasach.dto.PublisherDTO;
 import com.example.quanlynhasach.model.Product;
 import com.example.quanlynhasach.repository.ProductRepository;
 import com.example.quanlynhasach.service.ProductService;
@@ -44,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
             if (product.getDiscount() != null) {
                 existingProduct.setDiscount(product.getDiscount());
             }
-            if (product.getStock() != null) {
+            if (product.getStock() >= 0) {
                 existingProduct.setStock(product.getStock());
             }
             if (product.getDescription() != null) {
@@ -65,4 +68,45 @@ public class ProductServiceImpl implements ProductService {
         }
         return false;
     }
+
+    @Override
+    public ProductDTO convertToDTO(Product product) {
+        ProductDTO dto = new ProductDTO();
+        dto.setId(product.getId());
+        dto.setTitle(product.getTitle());
+        dto.setSlug(product.getSlug());
+        dto.setPrice(product.getPrice());
+        dto.setDiscount(product.getDiscount());
+        dto.setStock(product.getStock());
+        dto.setDescription(product.getDescription());
+        dto.setCoverImage(product.getCoverImage());
+
+        if (product.getCategory() != null) {
+            dto.setCategoryId(product.getCategory().getId());
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(product.getCategory().getId());
+            categoryDTO.setName(product.getCategory().getName());
+            categoryDTO.setDescription(product.getCategory().getDescription());
+            dto.setCategory(categoryDTO);
+        } else {
+            dto.setCategoryId(null);
+            dto.setCategory(null);
+        }
+
+        if (product.getPublisher() != null) {
+            dto.setPublisherId(product.getPublisher().getId());
+            PublisherDTO publisherDTO = new PublisherDTO();
+            publisherDTO.setId(product.getPublisher().getId());
+            publisherDTO.setName(product.getPublisher().getName());
+            publisherDTO.setAddress(product.getPublisher().getAddress());
+            publisherDTO.setContact(product.getPublisher().getContact());
+            dto.setPublisher(publisherDTO);
+        } else {
+            dto.setPublisherId(null);
+            dto.setPublisher(null);
+        }
+
+        return dto;
+    }
+
 }

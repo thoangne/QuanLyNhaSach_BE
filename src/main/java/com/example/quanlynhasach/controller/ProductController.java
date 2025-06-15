@@ -1,7 +1,10 @@
 package com.example.quanlynhasach.controller;
 
 import com.example.quanlynhasach.model.Product;
-import com.example.quanlynhasach.service.ProductService;
+import com.example.quanlynhasach.dto.ProductDTO;
+import com.example.quanlynhasach.model.Category;
+import com.example.quanlynhasach.model.Publisher;
+import com.example.quanlynhasach.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,27 +15,41 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+    private final CategoryService categoryService;
+    private final PublisherService publisherService;
+
+    public ProductController(ProductService productService, CategoryService categoryService,
+            PublisherService publisherService) {
+        this.productService = productService;
+        this.categoryService = categoryService;
+        this.publisherService = publisherService;
+    }
 
     // Lấy tất cả product
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         try {
             List<Product> products = productService.getAllProducts();
-            return ResponseEntity.ok(products);
+            List<ProductDTO> productDTOs = products.stream()
+                    .filter(p -> p.getCategory() != null && p.getPublisher() != null)
+                    .map(productService::convertToDTO)
+                    .toList();
+            return ResponseEntity.ok(productDTOs);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
 
     // Lấy product theo id
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable int id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable int id) {
         try {
             Product product = productService.getProductById(id);
             if (product != null) {
-                return ResponseEntity.ok(product);
+                ProductDTO dto = productService.convertToDTO(product);
+                return ResponseEntity.ok(dto);
             } else {
                 return ResponseEntity.notFound().build();
             }
@@ -43,11 +60,27 @@ public class ProductController {
 
     // Tạo product mới
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO dto) {
         try {
+            if (dto.getCategoryId() <= 0 || dto.getPublisherId() <= 0) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            Category category = categoryService.getCategoryById(dto.getCategoryId());
+            Publisher publisher = publisherService.getPublisherById(dto.getPublisherId());
+            Product product = new Product(
+                    dto.getTitle(),
+                    dto.getSlug(),
+                    dto.getPrice(),
+                    dto.getDiscount(),
+                    dto.getStock(),
+                    dto.getDescription(),
+                    dto.getCoverImage(),
+                    publisher,
+                    category);
             Product created = productService.createProduct(product);
             return ResponseEntity.status(201).body(created);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
